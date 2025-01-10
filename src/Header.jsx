@@ -1,4 +1,5 @@
 import * as React from 'react';
+import './header.scss';
 import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -22,9 +23,14 @@ const navItems = ['Home', 'About', 'Contact'];
 function DrawerAppBar(props) {
     const { window } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
+    const { theme, setTheme } = useTheme();
 
     const handleDrawerToggle = () => {
         setMobileOpen((prevState) => !prevState);
+    };
+
+    const handleThemeToggle = () => {
+        setTheme(theme === "dark" ? "light" : "dark");
     };
 
     const drawer = (
@@ -46,7 +52,6 @@ function DrawerAppBar(props) {
     );
 
     const container = window !== undefined ? () => window().document.body : undefined;
-    const { theme, setTheme } = useTheme();
 
     const appBarStyle = {
         backgroundColor: theme === "dark" ? '#333' : '#fff',
@@ -62,10 +67,8 @@ function DrawerAppBar(props) {
         color: theme === "dark" ? '#fff' : '#000', 
     };
 
-    // Dark Mode butonunun özel stili
-    const darkModeButtonStyle = {
-        ...buttonStyle,
-        border: '2px solid white', 
+    const switchButtonStyle = {
+        color: theme === "dark" ? '#fff' : '#000', 
     };
 
     return (
@@ -96,12 +99,38 @@ function DrawerAppBar(props) {
                                     {item}
                                 </Button>
                             ))}
-                            <Button 
-                                onClick={() => setTheme(theme === "dark" ? "light" : "dark")} 
-                                sx={darkModeButtonStyle}
-                            >
-                                DARK MODE
-                            </Button>
+
+                            <label className="switch" style={switchButtonStyle}>
+                                <input
+                                    id="input"
+                                    type="checkbox"
+                                    checked={theme === "dark"}
+                                    onChange={handleThemeToggle}
+                                />
+                                <div className="slider round">
+                                    <div className="sun-moon">
+                                        <svg id="moon-dot-1" className="moon-dot" viewBox="0 0 100 100">
+                                            <circle cx="50" cy="50" r="50"></circle>
+                                        </svg>
+                                        <svg id="moon-dot-2" className="moon-dot" viewBox="0 0 100 100">
+                                            <circle cx="50" cy="50" r="50"></circle>
+                                        </svg>
+                                        <svg id="moon-dot-3" className="moon-dot" viewBox="0 0 100 100">
+                                            <circle cx="50" cy="50" r="50"></circle>
+                                        </svg>
+                                        <svg id="light-ray-1" className="light-ray" viewBox="0 0 100 100">
+                                            <circle cx="50" cy="50" r="50"></circle>
+                                        </svg>
+                                    </div>
+                                    <div className="stars">
+                                        <svg id="star-1" className="star" viewBox="0 0 20 20">
+                                            <path
+                                              d="M 0 10 C 10 10,10 10 ,0 10 C 10 10 , 10 10 , 10 20 C 10 10 , 10 10 , 20 10 C 10 10 , 10 10 , 10 0 C 10 10,10 10 ,0 10 Z"
+                                            ></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </label>
                         </Box>
                     </Toolbar>
                 </AppBar>
